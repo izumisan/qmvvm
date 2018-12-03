@@ -32,4 +32,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DEFINES += IZM_QMVVM_BUILT_IN
-include(../../qmvvm.pri)
+include(../../qmvvm/qmvvm.pri)
