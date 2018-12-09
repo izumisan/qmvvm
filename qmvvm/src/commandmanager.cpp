@@ -23,6 +23,20 @@ void CommandManager::timerEvent( QTimerEvent* event )
     Q_EMIT requerySuggested();
 }
 
+void CommandManager::registerCommand( const ICommand* command )
+{
+    if ( command != nullptr )
+    {
+        connect( this,
+                 &CommandManager::requerySuggested,
+                 command,
+                 [command]{ command->raiseCanExecuteChanged(); },
+                 Qt::QueuedConnection );
+
+        start();
+    }
+}
+
 void CommandManager::start()
 {
     if ( m_timerid == 0 )

@@ -26,13 +26,7 @@ RelayCommand::RelayCommand( QObject* parent,
 
     if ( autoRaise )
     {
-        connect( CommandManager::instance(),
-                 &CommandManager::requerySuggested,
-                 this,
-                 [this] { raiseCanExecuteChanged(); },
-                 Qt::QueuedConnection );
-
-        CommandManager::instance()->start();
+        CommandManager::instance()->registerCommand( this );
     }
 }
 
