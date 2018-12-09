@@ -2,6 +2,7 @@
 #define IZM_QMVVM_COMMANDMANAGER_H
 
 #include <QObject>
+#include "icommand.h"
 
 namespace izm
 {
@@ -29,6 +30,7 @@ protected:
     void timerEvent( QTimerEvent* event );
 
 public:
+    void registerCommand( const ICommand* command );
     void start();
     void stop();
 
