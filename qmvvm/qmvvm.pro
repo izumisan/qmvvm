@@ -1,6 +1,7 @@
 # izm.qmvvm.dll
 
 QT -= gui
+QT += quickcontrols2
 
 TARGET = izm.qmvvm
 TEMPLATE = lib
