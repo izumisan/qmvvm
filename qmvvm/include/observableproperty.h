@@ -36,10 +36,10 @@ public:
                         const std::function<QVariant(const T&)>& getter,
                         const std::function<void(T&, const QVariant&)>& setter,
                         QObject* parent = nullptr )
-        : m_value( value )
+        : ObservablePropertyBase( parent )
+        , m_value( value )
         , m_getter( getter )
         , m_setter( setter )
-        , ObservablePropertyBase( parent )
     {
         assert( getter != nullptr );
         assert( setter != nullptr );
@@ -130,6 +130,13 @@ private:
     std::function<void(T&, const QVariant&)> m_setter = nullptr;
     QMap<int, std::function<void(const T&)>> m_actions = {};
 };
+
+extern template class ObservableProperty<bool>;
+extern template class ObservableProperty<unsigned int>;
+extern template class ObservableProperty<int>;
+extern template class ObservableProperty<float>;
+extern template class ObservableProperty<double>;
+extern template class ObservableProperty<QString>;
 
 } // namespace qmvvm
 } // namespace izm
