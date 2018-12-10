@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <QVariant>
+#include "qmvvm_global.h"
 
 namespace izm
 {
@@ -24,12 +25,21 @@ public:
     }
 };
 
+#if defined(IZMQMVVMSHARED_EXPORT)
+template class IZMQMVVMSHARED_EXPORT ObservableHelper<bool>;
+template class IZMQMVVMSHARED_EXPORT ObservableHelper<unsigned int>;
+template class IZMQMVVMSHARED_EXPORT ObservableHelper<int>;
+template class IZMQMVVMSHARED_EXPORT ObservableHelper<float>;
+template class IZMQMVVMSHARED_EXPORT ObservableHelper<double>;
+template class IZMQMVVMSHARED_EXPORT ObservableHelper<QString>;
+#else
 extern template class ObservableHelper<bool>;
 extern template class ObservableHelper<unsigned int>;
 extern template class ObservableHelper<int>;
 extern template class ObservableHelper<float>;
 extern template class ObservableHelper<double>;
 extern template class ObservableHelper<QString>;
+#endif
 
 } // namespace qmvvm
 } // namespace izm

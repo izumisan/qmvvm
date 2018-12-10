@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <QMap>
+#include "qmvvm_global.h"
 #include "observablepropertybase.h"
 #include "observablehelper.h"
 
@@ -131,12 +132,21 @@ private:
     QMap<int, std::function<void(const T&)>> m_actions = {};
 };
 
+#if defined(IZMQMVVMSHARED_EXPORT)
+template class IZMQMVVMSHARED_EXPORT ObservableProperty<bool>;
+template class IZMQMVVMSHARED_EXPORT ObservableProperty<unsigned int>;
+template class IZMQMVVMSHARED_EXPORT ObservableProperty<int>;
+template class IZMQMVVMSHARED_EXPORT ObservableProperty<float>;
+template class IZMQMVVMSHARED_EXPORT ObservableProperty<double>;
+template class IZMQMVVMSHARED_EXPORT ObservableProperty<QString>;
+#else
 extern template class ObservableProperty<bool>;
 extern template class ObservableProperty<unsigned int>;
 extern template class ObservableProperty<int>;
 extern template class ObservableProperty<float>;
 extern template class ObservableProperty<double>;
 extern template class ObservableProperty<QString>;
+#endif
 
 } // namespace qmvvm
 } // namespace izm

@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include <QVariant>
+#include "qmvvm_global.h"
 
 namespace izm
 {
 namespace qmvvm
 {
 
-class ObservablePropertyBase : public QObject
+class IZMQMVVMSHARED_EXPORT ObservablePropertyBase : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( QVariant value READ valueProperty WRITE setValueProperty NOTIFY valuePropertyChanged )
