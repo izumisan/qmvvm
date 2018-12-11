@@ -25,7 +25,7 @@ public:
     }
 };
 
-#if defined(IZMQMVVMSHARED_EXPORT)
+#if !defined(IZM_QMVVM_BUILT_IN)
 template class IZMQMVVMSHARED_EXPORT ObservableHelper<bool>;
 template class IZMQMVVMSHARED_EXPORT ObservableHelper<unsigned int>;
 template class IZMQMVVMSHARED_EXPORT ObservableHelper<int>;

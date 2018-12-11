@@ -5,7 +5,7 @@ namespace izm
 namespace qmvvm
 {
 
-#if !defined(IZMQMVVMSHARED_EXPORT)
+#if defined(IZM_QMVVM_BUILT_IN)
 template class ObservableHelper<bool>;
 template class ObservableHelper<unsigned int>;
 template class ObservableHelper<int>;

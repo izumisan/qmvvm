@@ -132,7 +132,7 @@ private:
     QMap<int, std::function<void(const T&)>> m_actions = {};
 };
 
-#if defined(IZMQMVVMSHARED_EXPORT)
+#if !defined(IZM_QMVVM_BUILT_IN)
 template class IZMQMVVMSHARED_EXPORT ObservableProperty<bool>;
 template class IZMQMVVMSHARED_EXPORT ObservableProperty<unsigned int>;
 template class IZMQMVVMSHARED_EXPORT ObservableProperty<int>;
