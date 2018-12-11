@@ -8,3 +8,5 @@
     - CommandManagerを利用したサンプルプログラム
 1. Commands
     - 各Commandクラスの比較サンプルプログラム
+1. ObservableProperty
+    - ObservablePropertyのサンプルプログラム
