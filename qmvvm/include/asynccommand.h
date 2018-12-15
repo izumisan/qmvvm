@@ -15,16 +15,20 @@ class IZMQMVVMSHARED_EXPORT AsyncCommand : public CommandBase
 {
     Q_OBJECT
 Q_SIGNALS:
-    void start() const;
-    void finished() const;
+    void asyncStarted() const;
+    void asyncFinished() const;
 
 public:
-    AsyncCommand( QObject* parent,
-                  const std::function<void()>& execute );
-    AsyncCommand( QObject* parent,
-                  const std::function<void()>& execute,
+    AsyncCommand( QObject* parent = nullptr );
+    AsyncCommand( const std::function<void()>& execute,
+                  QObject* parent = nullptr );
+    AsyncCommand( const std::function<void()>& execute,
                   const std::function<bool()>& canExecute,
-                  const bool autoRaise = false );
+                  QObject* parent = nullptr );
+    AsyncCommand( const std::function<void()>& execute,
+                  const std::function<bool()>& canExecute,
+                  const bool autoRaise,
+                  QObject* parent = nullptr );
     virtual ~AsyncCommand() = default;
 
 public Q_SLOTS:
@@ -36,8 +40,8 @@ private:
     void setReady( const bool value );
 
 private:
-    std::function<void()> m_execute = []{};
-    std::function<bool()> m_canExecute = []{return true;};
+    std::function<void()> m_execute = nullptr;
+    std::function<bool()> m_canExecute = nullptr;
     std::future<void> m_task = {};
     bool m_ready = false;
 };
