@@ -21,7 +21,6 @@ public:
         , m_relayCommand()
     {
         m_relayCommand = new izm::qmvvm::RelayCommand(
-            parent,
             [this]
             {
                 setCount( m_count + 1 );
@@ -37,7 +36,8 @@ public:
                     }
                 }
                 return ret;
-            } );
+            },
+            parent );
     }
     virtual ~MainViewModel() = default;
 
