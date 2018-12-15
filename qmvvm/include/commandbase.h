@@ -2,13 +2,14 @@
 #define IZM_QMVVM_COMMANDBASE_H
 
 #include <QObject>
+#include "qmvvm_global.h"
 
 namespace izm
 {
 namespace qmvvm
 {
 
-class CommandBase : public QObject
+class IZMQMVVMSHARED_EXPORT CommandBase : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( bool canExecute READ canExecute NOTIFY canExecuteChanged )
