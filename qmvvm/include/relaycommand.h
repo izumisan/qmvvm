@@ -3,14 +3,14 @@
 
 #include <functional>
 #include "qmvvm_global.h"
-#include "icommand.h"
+#include "commandbase.h"
 
 namespace izm
 {
 namespace qmvvm
 {
 
-class IZMQMVVMSHARED_EXPORT RelayCommand : public ICommand
+class IZMQMVVMSHARED_EXPORT RelayCommand : public CommandBase
 {
     Q_OBJECT
 
@@ -27,7 +27,6 @@ public Q_SLOTS:
     virtual void execute() override;
 public:
     virtual bool canExecute() const override;
-    virtual void raiseCanExecuteChanged() const override;
 
 private:
     std::function<void()> m_execute = []{};

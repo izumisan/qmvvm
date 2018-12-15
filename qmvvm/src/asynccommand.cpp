@@ -18,7 +18,7 @@ AsyncCommand::AsyncCommand( QObject* parent,
               const std::function<void()>& execute,
               const std::function<bool()>& canExecute,
               const bool autoRaise )
-    : ICommand( parent )
+    : CommandBase( parent )
     , m_execute( execute )
     , m_canExecute( canExecute )
 {
@@ -54,11 +54,6 @@ void AsyncCommand::execute()
 bool AsyncCommand::canExecute() const
 {
     return ready() ? m_canExecute() : false;
-}
-
-void AsyncCommand::raiseCanExecuteChanged() const
-{
-    Q_EMIT canExecuteChanged();
 }
 
 bool AsyncCommand::ready() const

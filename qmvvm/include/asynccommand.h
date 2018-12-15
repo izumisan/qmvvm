@@ -4,14 +4,14 @@
 #include <functional>
 #include <future>
 #include "qmvvm_global.h"
-#include "icommand.h"
+#include "commandbase.h"
 
 namespace izm
 {
 namespace qmvvm
 {
 
-class IZMQMVVMSHARED_EXPORT AsyncCommand : public ICommand
+class IZMQMVVMSHARED_EXPORT AsyncCommand : public CommandBase
 {
     Q_OBJECT
 Q_SIGNALS:
@@ -31,7 +31,6 @@ public Q_SLOTS:
     virtual void execute() override;
 public:
     virtual bool canExecute() const override;
-    virtual void raiseCanExecuteChanged() const override;
 private:
     bool ready() const;
     void setReady( const bool value );

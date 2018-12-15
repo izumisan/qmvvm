@@ -23,7 +23,7 @@ void CommandManager::timerEvent( QTimerEvent* event )
     Q_EMIT requerySuggested();
 }
 
-void CommandManager::registerCommand( const ICommand* command )
+void CommandManager::registerCommand( const CommandBase* command )
 {
     if ( command != nullptr )
     {
