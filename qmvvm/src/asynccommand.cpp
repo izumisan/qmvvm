@@ -8,17 +8,29 @@ namespace izm
 namespace qmvvm
 {
 
-AsyncCommand::AsyncCommand( QObject* parent,
-              const std::function<void()>& execute )
-    : AsyncCommand( parent, execute, []{return true;}, false )
+AsyncCommand::AsyncCommand( QObject* parent )
+    : AsyncCommand( []{}, []{return true;}, false, parent )
 {
 }
 
-AsyncCommand::AsyncCommand( QObject* parent,
-              const std::function<void()>& execute,
-              const std::function<bool()>& canExecute,
-              const bool autoRaise )
-    : ICommand( parent )
+AsyncCommand::AsyncCommand( const std::function<void()>& execute,
+                            QObject* parent )
+    : AsyncCommand( execute, []{return true;}, false, parent )
+{
+}
+
+AsyncCommand::AsyncCommand( const std::function<void()>& execute,
+                            const std::function<bool()>& canExecute,
+                            QObject* parent )
+    : AsyncCommand( execute, canExecute, false, parent )
+{
+}
+
+AsyncCommand::AsyncCommand( const std::function<void()>& execute,
+                            const std::function<bool()>& canExecute,
+                            const bool autoRaise,
+                            QObject* parent )
+    : CommandBase( parent )
     , m_execute( execute )
     , m_canExecute( canExecute )
 {
@@ -30,9 +42,13 @@ AsyncCommand::AsyncCommand( QObject* parent,
         CommandManager::instance()->registerCommand( this );
     }
 
-    connect ( this, &AsyncCommand::finished,
-              this, [this] { setReady( true ); },
-              Qt::QueuedConnection);
+    connect ( this, &AsyncCommand::asyncFinished,
+              this, [this]
+              {
+                  setReady( true );
+                  raiseFinished();
+              },
+              Qt::QueuedConnection );
 
     setReady( true );
 }
@@ -42,11 +58,12 @@ void AsyncCommand::execute()
     if ( ready() )
     {
         setReady( false );
+        raiseStarted();
         m_task = std::async( std::launch::async, [this]
         {
-            Q_EMIT start();
+            Q_EMIT asyncStarted();
             m_execute();
-            Q_EMIT finished();
+            Q_EMIT asyncFinished();
         } );
     }
 }
@@ -54,11 +71,6 @@ void AsyncCommand::execute()
 bool AsyncCommand::canExecute() const
 {
     return ready() ? m_canExecute() : false;
-}
-
-void AsyncCommand::raiseCanExecuteChanged() const
-{
-    Q_EMIT canExecuteChanged();
 }
 
 bool AsyncCommand::ready() const

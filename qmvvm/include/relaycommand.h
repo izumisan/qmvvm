@@ -3,35 +3,38 @@
 
 #include <functional>
 #include "qmvvm_global.h"
-#include "icommand.h"
+#include "commandbase.h"
 
 namespace izm
 {
 namespace qmvvm
 {
 
-class IZMQMVVMSHARED_EXPORT RelayCommand : public ICommand
+class IZMQMVVMSHARED_EXPORT RelayCommand : public CommandBase
 {
     Q_OBJECT
 
 public:
-    RelayCommand( QObject* parent,
-                  const std::function<void()>& execute );
-    RelayCommand( QObject* parent,
-                  const std::function<void()>& execute,
+    RelayCommand( QObject* parent = nullptr );
+    RelayCommand( const std::function<void()>& execute,
+                  QObject* parent = nullptr );
+    RelayCommand( const std::function<void()>& execute,
                   const std::function<bool()>& canExecute,
-                  const bool autoRaise = false );
+                  QObject* parent = nullptr );
+    RelayCommand( const std::function<void()>& execute,
+                  const std::function<bool()>& canExecute,
+                  const bool autoRaise,
+                  QObject* parent = nullptr );
     virtual ~RelayCommand() = default;
 
 public Q_SLOTS:
     virtual void execute() override;
 public:
     virtual bool canExecute() const override;
-    virtual void raiseCanExecuteChanged() const override;
 
 private:
-    std::function<void()> m_execute = []{};
-    std::function<bool()> m_canExecute = []{return true;};
+    std::function<void()> m_execute = nullptr;
+    std::function<bool()> m_canExecute = nullptr;
 };
 
 } // namespace qmvvm

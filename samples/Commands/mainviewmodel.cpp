@@ -8,26 +8,26 @@ MainViewModel::MainViewModel( QObject* parent )
     : QObject(parent)
 {
     m_relayCommand1 = new izm::qmvvm::RelayCommand(
-                parent,
                 [this] { commandExecute(); },
-                [this] { return canCommandExecute(); } );
+                [this] { return canCommandExecute(); },
+                parent );
 
     m_relayCommand2 = new izm::qmvvm::RelayCommand(
-                parent,
                 [this] { commandExecute(); },
                 [this] { return canCommandExecute(); },
-                true );
+                true,
+                parent );
 
     m_asyncCommand1 = new izm::qmvvm::AsyncCommand(
-                parent,
-                [this] { commandExecute(); },
-                [this] { return canCommandExecute(); } );
-
-    m_asyncCommand2 = new izm::qmvvm::AsyncCommand(
-                parent,
                 [this] { commandExecute(); },
                 [this] { return canCommandExecute(); },
-                true );
+                parent );
+
+    m_asyncCommand2 = new izm::qmvvm::AsyncCommand(
+                [this] { commandExecute(); },
+                [this] { return canCommandExecute(); },
+                true,
+                parent );
 }
 
 void MainViewModel::commandExecute()

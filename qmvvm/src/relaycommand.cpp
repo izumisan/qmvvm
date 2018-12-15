@@ -7,17 +7,29 @@ namespace izm
 namespace qmvvm
 {
 
-RelayCommand::RelayCommand( QObject* parent,
-              const std::function<void()>& execute )
-    : RelayCommand( parent, execute, []{return true;}, false )
+RelayCommand::RelayCommand( QObject* parent )
+    : RelayCommand( []{}, []{return true;}, false, parent )
 {
 }
 
-RelayCommand::RelayCommand( QObject* parent,
-              const std::function<void()>& execute,
-              const std::function<bool()>& canExecute,
-              const bool autoRaise )
-    : ICommand( parent )
+RelayCommand::RelayCommand( const std::function<void()>& execute,
+                            QObject* parent )
+    : RelayCommand( execute, []{return true;}, false, parent )
+{
+}
+
+RelayCommand::RelayCommand( const std::function<void()>& execute,
+                            const std::function<bool()>& canExecute,
+                            QObject* parent )
+    : RelayCommand( execute, canExecute, false, parent )
+{
+}
+
+RelayCommand::RelayCommand( const std::function<void()>& execute,
+                            const std::function<bool()>& canExecute,
+                            const bool autoRaise,
+                            QObject* parent )
+    : CommandBase( parent )
     , m_execute( execute )
     , m_canExecute( canExecute )
 {
@@ -32,17 +44,14 @@ RelayCommand::RelayCommand( QObject* parent,
 
 void RelayCommand::execute()
 {
+    raiseStarted();
     m_execute();
+    raiseFinished();
 }
 
 bool RelayCommand::canExecute() const
 {
     return m_canExecute();
-}
-
-void RelayCommand::raiseCanExecuteChanged() const
-{
-    Q_EMIT canExecuteChanged();
 }
 
 } // namespace qmvvm
