@@ -16,6 +16,10 @@ template<class T>
 class ObservableProperty : public ObservablePropertyBase
 {
 public:
+    ObservableProperty( QObject* parent = nullptr )
+        : ObservableProperty( {}, [](const T&){return QVariant();}, [](T&, const QVariant&){}, parent )
+    {
+    }
     ObservableProperty( const std::function<QVariant(const T&)>& getter,
                         QObject* parent = nullptr )
         : ObservableProperty( {}, getter, [](T&, const QVariant&){}, parent )
