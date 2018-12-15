@@ -43,7 +43,11 @@ AsyncCommand::AsyncCommand( const std::function<void()>& execute,
     }
 
     connect ( this, &AsyncCommand::asyncFinished,
-              this, [this] { setReady( true ); },
+              this, [this]
+              {
+                  setReady( true );
+                  raiseFinished();
+              },
               Qt::QueuedConnection );
 
     setReady( true );
@@ -54,6 +58,7 @@ void AsyncCommand::execute()
     if ( ready() )
     {
         setReady( false );
+        raiseStarted();
         m_task = std::async( std::launch::async, [this]
         {
             Q_EMIT asyncStarted();

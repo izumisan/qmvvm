@@ -14,6 +14,8 @@ class CommandBase : public QObject
     Q_PROPERTY( bool canExecute READ canExecute NOTIFY canExecuteChanged )
 Q_SIGNALS:
     void canExecuteChanged() const;
+    void started() const;
+    void finished() const;
 
 public:
     explicit CommandBase( QObject* parent = nullptr )
@@ -30,6 +32,16 @@ public:
     virtual void raiseCanExecuteChanged() const
     {
         Q_EMIT canExecuteChanged();
+    }
+
+    virtual void raiseStarted() const
+    {
+        Q_EMIT started();
+    }
+
+    virtual void raiseFinished() const
+    {
+        Q_EMIT finished();
     }
 };
 

@@ -44,7 +44,9 @@ RelayCommand::RelayCommand( const std::function<void()>& execute,
 
 void RelayCommand::execute()
 {
+    raiseStarted();
     m_execute();
+    raiseFinished();
 }
 
 bool RelayCommand::canExecute() const
