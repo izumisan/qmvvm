@@ -86,20 +86,17 @@ public:
         return m_value;
     }
 
-    bool setValue( const T& data, bool doesRaisePropertyChanged = true )
+    void setValue( const T& data, bool doesRaisePropertyChanged = true )
     {
-        bool ret = false;
         if ( m_value != data )
         {
             m_value = data;
-            ret = true;
 
             if ( doesRaisePropertyChanged )
             {
                 raiseValuePropertyChanged();
             }
         }
-        return ret;
     }
 
     int subscribe( const std::function<void(const T&)>& action )

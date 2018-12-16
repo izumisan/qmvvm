@@ -10,3 +10,5 @@
     - 各Commandクラスの比較サンプルプログラム
 1. ObservableProperty
     - ObservablePropertyのサンプルプログラム
+1. ViewModel
+    - ViewModelBaseを利用したサンプルプログラム
