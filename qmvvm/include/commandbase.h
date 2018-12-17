@@ -19,31 +19,18 @@ Q_SIGNALS:
     void finished() const;
 
 public:
-    explicit CommandBase( QObject* parent = nullptr )
-        : QObject( parent )
-    {
-    }
+    explicit CommandBase( QObject* parent );
     virtual ~CommandBase() = default;
 
 public Q_SLOTS:
     virtual void execute() = 0;
 public:
     virtual bool canExecute() const = 0;
+    virtual void raiseCanExecuteChanged() const;
 
-    virtual void raiseCanExecuteChanged() const
-    {
-        Q_EMIT canExecuteChanged();
-    }
-
-    virtual void raiseStarted() const
-    {
-        Q_EMIT started();
-    }
-
-    virtual void raiseFinished() const
-    {
-        Q_EMIT finished();
-    }
+protected:
+    virtual void raiseStarted() const;
+    virtual void raiseFinished() const;
 };
 
 } // namespace qmvvm
