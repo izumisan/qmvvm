@@ -12,3 +12,5 @@
     - ObservablePropertyのサンプルプログラム
 1. ViewModel
     - ViewModelBaseを利用したサンプルプログラム
+1. ObservableCommand
+    - ObservableCommandを利用したサンプルプログラム
