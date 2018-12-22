@@ -10,6 +10,10 @@
     Q_PROPERTY( izm::qmvvm::ObservablePropertyBase* name READ get_##var CONSTANT ) \
     izm::qmvvm::ObservablePropertyBase* get_##var() { return &( var ); }
 
+#define COLLECTION_PROPERTY( name, var ) \
+    Q_PROPERTY( izm::qmvvm::ObservableCollectionBase* name READ get_##var CONSTANT ) \
+    izm::qmvvm::ObservableCollectionBase* get_##var() { return &( var ); }
+
 #define COMMAND_PROPERTY( name, var ) \
     Q_PROPERTY( izm::qmvvm::CommandBase* name READ get_##var CONSTANT ) \
     izm::qmvvm::CommandBase* get_##var() { return &( var ); }
