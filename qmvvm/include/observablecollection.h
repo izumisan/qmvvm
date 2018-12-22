@@ -4,6 +4,7 @@
 #include "qmvvm_global.h"
 #include "observablecollectionbase.h"
 #include "collectionrole.h"
+#include "observablehelper.h"
 
 namespace izm
 {
