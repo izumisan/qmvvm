@@ -14,15 +14,34 @@ Window {
 
     ListView {
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: -50
+        anchors.horizontalCenterOffset: -101
         anchors.verticalCenter: parent.verticalCenter
         width: contentWidth
         height: contentHeight
+
+        spacing: 2
 
         model: vm.collection
 
         delegate: Button {
             text: model.value
+            onClicked: model.value += 1
+        }
+    }
+
+    ListView {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: 1
+        anchors.verticalCenter: parent.verticalCenter
+        width: contentWidth
+        height: contentHeight
+
+        spacing: 2
+
+        model: vm.foos
+
+        delegate: Button {
+            text: model.name + " : " + model.value
             onClicked: model.value += 1
         }
     }
