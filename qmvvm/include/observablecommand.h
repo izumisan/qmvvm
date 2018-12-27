@@ -4,14 +4,14 @@
 #include <functional>
 #include <QMap>
 #include "qmvvm_global.h"
-#include "relaycommand.h"
+#include "commandbase.h"
 
 namespace izm
 {
 namespace qmvvm
 {
 
-class IZMQMVVMSHARED_EXPORT ObservableCommand : public RelayCommand
+class IZMQMVVMSHARED_EXPORT ObservableCommand : public CommandBase
 {
     Q_OBJECT
 public:
@@ -27,6 +27,10 @@ public:
                        QObject* parent = nullptr );
     virtual ~ObservableCommand() = default;
 
+public Q_SLOTS:
+    virtual void execute() override;
+    virtual bool canExecute() const override;
+
 public:
     int subscribe( const std::function<void()>& onFinished );
     int subscribe( const std::function<void()>& onStarted, const std::function<void()>& onFinished );
@@ -34,6 +38,9 @@ public:
     void clear();
 
 private:
+    std::function<void()> m_execute = nullptr;
+    std::function<bool()> m_canExecute = nullptr;
+
     QMap<int, std::function<void()>> m_onStartedActions = {};
     QMap<int, std::function<void()>> m_onFinishedActions = {};
 };

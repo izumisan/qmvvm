@@ -1,3 +1,5 @@
+#include <cassert>
+#include "commandmanager.h"
 #include "observablecommand.h"
 
 namespace izm
@@ -27,8 +29,18 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
                                       const std::function<bool()>& canExecute,
                                       const bool autoRaise,
                                       QObject* parent )
-    : RelayCommand( execute, canExecute, autoRaise, parent )
+    : CommandBase( parent )
+    , m_execute( execute )
+    , m_canExecute( canExecute )
 {
+    assert( m_execute != nullptr );
+    assert( m_canExecute != nullptr );
+
+    if ( autoRaise )
+    {
+        CommandManager::instance()->registerCommand( this );
+    }
+
     connect( this, &ObservableCommand::started,
              this, [this]
     {
@@ -52,6 +64,18 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
             }
         }
     } );
+}
+
+void ObservableCommand::execute()
+{
+    raiseStarted();
+    m_execute();
+    raiseFinished();
+}
+
+bool ObservableCommand::canExecute() const
+{
+    return m_canExecute();
 }
 
 int ObservableCommand::subscribe( const std::function<void()>& onFinished )
