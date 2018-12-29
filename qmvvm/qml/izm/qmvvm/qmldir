@@ -1,3 +1,4 @@
 module izm.qmvvm
 
 Command 1.0 Command.qml
+AsyncableCommand 1.0 AsyncableCommand.qml

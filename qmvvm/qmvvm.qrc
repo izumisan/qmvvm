@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>qml/izm/qmvvm/Command.qml</file>
         <file>qml/izm/qmvvm/qmldir</file>
+        <file>qml/izm/qmvvm/AsyncableCommand.qml</file>
     </qresource>
 </RCC>
