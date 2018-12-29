@@ -34,8 +34,10 @@ public:
 
 public Q_SLOTS:
     virtual void execute() override;
-    virtual bool canExecute() const override;
     void executeAsync();
+
+public:
+    virtual bool canExecute() const override;
 
 public:
     int subscribe( const std::function<void()>& onFinished );

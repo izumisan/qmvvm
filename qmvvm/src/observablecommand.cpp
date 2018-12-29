@@ -87,11 +87,6 @@ void ObservableCommand::execute()
     raiseFinished();
 }
 
-bool ObservableCommand::canExecute() const
-{
-    return m_ready ? m_canExecute() : false;
-}
-
 void ObservableCommand::executeAsync()
 {
     if ( m_ready )
@@ -104,6 +99,11 @@ void ObservableCommand::executeAsync()
             Q_EMIT asyncFinished();
         } );
     }
+}
+
+bool ObservableCommand::canExecute() const
+{
+    return m_ready ? m_canExecute() : false;
 }
 
 int ObservableCommand::subscribe( const std::function<void()>& onFinished )
@@ -162,11 +162,7 @@ void ObservableCommand::setReady( const bool value )
     if ( m_ready != value )
     {
         m_ready = value;
-
-        if ( m_ready )
-        {
-            raiseCanExecuteChanged();
-        }
+        raiseCanExecuteChanged();
     }
 }
 
