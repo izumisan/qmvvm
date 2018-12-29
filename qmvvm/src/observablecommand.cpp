@@ -42,6 +42,18 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
     }
 
     connect( this, &ObservableCommand::started,
+             this, [this] { setReady( false ); },
+             Qt::DirectConnection );
+
+    connect( this, &ObservableCommand::finished,
+             this, [this] { setReady( true ); },
+             Qt::QueuedConnection );
+
+    connect ( this, &ObservableCommand::asyncFinished,
+              this, [this] { raiseFinished(); },
+              Qt::QueuedConnection );
+
+    connect( this, &ObservableCommand::started,
              this, [this]
     {
         for ( auto&& action : m_onStartedActions.values() )
@@ -64,6 +76,8 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
             }
         }
     } );
+
+    setReady( true );
 }
 
 void ObservableCommand::execute()
@@ -75,7 +89,21 @@ void ObservableCommand::execute()
 
 bool ObservableCommand::canExecute() const
 {
-    return m_canExecute();
+    return m_ready ? m_canExecute() : false;
+}
+
+void ObservableCommand::executeAsync()
+{
+    if ( m_ready )
+    {
+        raiseStarted();
+        m_task = std::async( std::launch::async, [this]
+        {
+            Q_EMIT asyncStarted();
+            m_execute();
+            Q_EMIT asyncFinished();
+        } );
+    }
 }
 
 int ObservableCommand::subscribe( const std::function<void()>& onFinished )
@@ -127,6 +155,19 @@ void ObservableCommand::clear()
 {
     m_onStartedActions.clear();
     m_onFinishedActions.clear();
+}
+
+void ObservableCommand::setReady( const bool value )
+{
+    if ( m_ready != value )
+    {
+        m_ready = value;
+
+        if ( m_ready )
+        {
+            raiseCanExecuteChanged();
+        }
+    }
 }
 
 } // namespace qmvvm
