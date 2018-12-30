@@ -82,7 +82,7 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
 
 void ObservableCommand::execute()
 {
-    if ( !m_asyncEnabled )
+    if ( !m_isAsync )
     {
         executeDirect();
     }
@@ -97,18 +97,14 @@ bool ObservableCommand::canExecute() const
     return m_ready ? m_canExecute() : false;
 }
 
-bool ObservableCommand::asyncEnabled() const
+bool ObservableCommand::isAsync() const
 {
-    return m_asyncEnabled;
+    return m_isAsync;
 }
 
-void ObservableCommand::setAsyncEnabled( const bool value )
+void ObservableCommand::setAsync( const bool value )
 {
-    if ( m_asyncEnabled != value )
-    {
-        m_asyncEnabled = value;
-        Q_EMIT asyncEnabledChanged();
-    }
+    m_isAsync = value;
 }
 
 int ObservableCommand::subscribe( const std::function<void()>& onFinished )
