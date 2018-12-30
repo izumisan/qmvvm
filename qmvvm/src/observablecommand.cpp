@@ -1,3 +1,5 @@
+#include <cassert>
+#include "commandmanager.h"
 #include "observablecommand.h"
 
 namespace izm
@@ -27,8 +29,30 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
                                       const std::function<bool()>& canExecute,
                                       const bool autoRaise,
                                       QObject* parent )
-    : RelayCommand( execute, canExecute, autoRaise, parent )
+    : CommandBase( parent )
+    , m_execute( execute )
+    , m_canExecute( canExecute )
 {
+    assert( m_execute != nullptr );
+    assert( m_canExecute != nullptr );
+
+    if ( autoRaise )
+    {
+        CommandManager::instance()->registerCommand( this );
+    }
+
+    connect( this, &ObservableCommand::started,
+             this, [this] { setReady( false ); },
+             Qt::DirectConnection );
+
+    connect( this, &ObservableCommand::finished,
+             this, [this] { setReady( true ); },
+             Qt::QueuedConnection );
+
+    connect ( this, &ObservableCommand::asyncFinished,
+              this, [this] { raiseFinished(); },
+              Qt::QueuedConnection );
+
     connect( this, &ObservableCommand::started,
              this, [this]
     {
@@ -52,6 +76,35 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
             }
         }
     } );
+
+    setReady( true );
+}
+
+void ObservableCommand::execute()
+{
+    if ( !m_isAsync )
+    {
+        executeDirect();
+    }
+    else
+    {
+        executeAsync();
+    }
+}
+
+bool ObservableCommand::canExecute() const
+{
+    return m_ready ? m_canExecute() : false;
+}
+
+bool ObservableCommand::isAsync() const
+{
+    return m_isAsync;
+}
+
+void ObservableCommand::setAsync( const bool value )
+{
+    m_isAsync = value;
 }
 
 int ObservableCommand::subscribe( const std::function<void()>& onFinished )
@@ -103,6 +156,36 @@ void ObservableCommand::clear()
 {
     m_onStartedActions.clear();
     m_onFinishedActions.clear();
+}
+
+void ObservableCommand::executeDirect()
+{
+    raiseStarted();
+    m_execute();
+    raiseFinished();
+}
+
+void ObservableCommand::executeAsync()
+{
+    if ( m_ready )
+    {
+        raiseStarted();
+        m_task = std::async( std::launch::async, [this]
+        {
+            Q_EMIT asyncStarted();
+            m_execute();
+            Q_EMIT asyncFinished();
+        } );
+    }
+}
+
+void ObservableCommand::setReady( const bool value )
+{
+    if ( m_ready != value )
+    {
+        m_ready = value;
+        raiseCanExecuteChanged();
+    }
 }
 
 } // namespace qmvvm
