@@ -15,7 +15,9 @@ namespace qmvvm
 class IZMQMVVMSHARED_EXPORT ObservableCommand : public CommandBase
 {
     Q_OBJECT
+    Q_PROPERTY( bool asyncEnabled READ asyncEnabled WRITE setAsyncEnabled NOTIFY asyncEnabledChanged )
 Q_SIGNALS:
+    void asyncEnabledChanged() const;
     void asyncStarted() const;
     void asyncFinished() const;
 
@@ -34,27 +36,28 @@ public:
 
 public Q_SLOTS:
     virtual void execute() override;
-    void executeAsync();
-
 public:
     virtual bool canExecute() const override;
 
 public:
+    bool asyncEnabled() const;
+    void setAsyncEnabled( const bool value );
     int subscribe( const std::function<void()>& onFinished );
     int subscribe( const std::function<void()>& onStarted, const std::function<void()>& onFinished );
     void unsubscribe( const int& actionid );
     void clear();
 
 private:
+    void executeDirect();
+    void executeAsync();
     void setReady( const bool value );
 
 private:
     std::function<void()> m_execute = nullptr;
     std::function<bool()> m_canExecute = nullptr;
-
-    std::future<void> m_task = {};
+    bool m_asyncEnabled = false;
     bool m_ready = false;
-
+    std::future<void> m_task = {};
     QMap<int, std::function<void()>> m_onStartedActions = {};
     QMap<int, std::function<void()>> m_onFinishedActions = {};
 };

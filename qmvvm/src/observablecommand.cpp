@@ -82,28 +82,33 @@ ObservableCommand::ObservableCommand( const std::function<void()>& execute,
 
 void ObservableCommand::execute()
 {
-    raiseStarted();
-    m_execute();
-    raiseFinished();
-}
-
-void ObservableCommand::executeAsync()
-{
-    if ( m_ready )
+    if ( !m_asyncEnabled )
     {
-        raiseStarted();
-        m_task = std::async( std::launch::async, [this]
-        {
-            Q_EMIT asyncStarted();
-            m_execute();
-            Q_EMIT asyncFinished();
-        } );
+        executeDirect();
+    }
+    else
+    {
+        executeAsync();
     }
 }
 
 bool ObservableCommand::canExecute() const
 {
     return m_ready ? m_canExecute() : false;
+}
+
+bool ObservableCommand::asyncEnabled() const
+{
+    return m_asyncEnabled;
+}
+
+void ObservableCommand::setAsyncEnabled( const bool value )
+{
+    if ( m_asyncEnabled != value )
+    {
+        m_asyncEnabled = value;
+        Q_EMIT asyncEnabledChanged();
+    }
 }
 
 int ObservableCommand::subscribe( const std::function<void()>& onFinished )
@@ -155,6 +160,27 @@ void ObservableCommand::clear()
 {
     m_onStartedActions.clear();
     m_onFinishedActions.clear();
+}
+
+void ObservableCommand::executeDirect()
+{
+    raiseStarted();
+    m_execute();
+    raiseFinished();
+}
+
+void ObservableCommand::executeAsync()
+{
+    if ( m_ready )
+    {
+        raiseStarted();
+        m_task = std::async( std::launch::async, [this]
+        {
+            Q_EMIT asyncStarted();
+            m_execute();
+            Q_EMIT asyncFinished();
+        } );
+    }
 }
 
 void ObservableCommand::setReady( const bool value )
