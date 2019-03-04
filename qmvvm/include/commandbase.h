@@ -9,6 +9,9 @@ namespace izm
 namespace qmvvm
 {
 
+class ObservablePropertyBase;
+class ObservableCollectionBase;
+
 class IZMQMVVMSHARED_EXPORT CommandBase : public QObject
 {
     Q_OBJECT
@@ -27,6 +30,9 @@ public Q_SLOTS:
 public:
     virtual bool canExecute() const = 0;
     virtual void raiseCanExecuteChanged() const;
+public:
+    void observesProperty( const ObservablePropertyBase* observableProperty ) const;
+    void observesCollection( const ObservableCollectionBase* observableCollection ) const;
 
 protected:
     virtual void raiseStarted() const;
