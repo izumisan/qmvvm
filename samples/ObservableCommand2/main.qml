@@ -19,12 +19,12 @@ Window {
 
         Button {
             text: "sync: " + vm.value.value
-            action: Command { command: vm.command1 }
+            action: CommandAction { command: vm.command1 }
         }
 
         Button {
             text: "async: " + vm.value.value
-            action: Command { command: vm.command2 }
+            action: CommandAction { command: vm.command2 }
         }
     }
 }

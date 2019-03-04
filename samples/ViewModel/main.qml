@@ -19,7 +19,7 @@ Window {
 
         Button {
             text: vm.value.value
-            action: Command { command: vm.command }
+            action: CommandAction { command: vm.command }
         }
     }
 }
