@@ -8,4 +8,5 @@ SUBDIRS += \
     ObservableCommand2 \
     ObservableProperty \
     RelayCommand \
+    RelayCommand2 \
     ViewModel

@@ -2,6 +2,8 @@
 
 1. RelayCommand
     - RelayCommandを用いた単純なサンプルプログラム
+1. RelayCommand2
+    - observesProperty()によりObservablePropertyの変更を監視したサンプルプログラム
 1. BuiltInApp
     - 共有ライブラリを利用するのではなく、アプリケーションに組み込んだプログラム
 1. CommandManager
