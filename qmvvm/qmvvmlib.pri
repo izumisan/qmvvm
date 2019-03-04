@@ -9,3 +9,6 @@ CONFIG(debug, debug|release) {
 } else {
     msvc: LIBS += $$quote($${LIBDIR}/release/izm.qmvvm.lib)
 }
+
+QML_IMPORT_PATH += $${PWD}/qml
+RESOURCES += $${PWD}/qmvvm.qrc

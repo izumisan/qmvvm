@@ -12,3 +12,6 @@ HEADERS += \
 
 SOURCES += \
     $${SRCDIR}/*.cpp
+
+QML_IMPORT_PATH += $${PWD}/qml
+RESOURCES += $${PWD}/qmvvm.qrc
