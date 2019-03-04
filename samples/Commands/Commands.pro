@@ -32,4 +32,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-include(../../qmvvm/qmvvmlib.pri)
+CONFIG(debug, debug|release) {
+    DEFINES += IZM_QMVVM_BUILT_IN
+    include(../../qmvvm/qmvvm.pri)
+} else {
+    include(../../qmvvm/qmvvmlib.pri)
+}
