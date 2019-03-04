@@ -29,22 +29,22 @@ Item {
                 spacing: 2
                 Button {
                     text: "relay1"
-                    action: Command { command: vm.relayCommand1 }
+                    action: CommandAction { command: vm.relayCommand1 }
                 }
                 Button {
                     text: "async1"
-                    action: Command { command: vm.asyncCommand1 }
+                    action: CommandAction { command: vm.asyncCommand1 }
                 }
             }
             ColumnLayout {
                 spacing: 2
                 Button {
                     text: "relay2"
-                    action: Command { command: vm.relayCommand2 }
+                    action: CommandAction { command: vm.relayCommand2 }
                 }
                 Button {
                     text: "async2"
-                    action: Command { command: vm.asyncCommand2 }
+                    action: CommandAction { command: vm.asyncCommand2 }
                 }
             }
         }
