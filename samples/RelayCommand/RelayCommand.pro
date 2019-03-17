@@ -31,9 +31,25 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-CONFIG(debug, debug|release) {
-    DEFINES += IZM_QMVVM_BUILT_IN
-    include(../../qmvvm/qmvvm.pri)
-} else {
-    include(../../qmvvm/qmvvmlib.pri)
+#CONFIG(debug, debug|release) {
+#    DEFINES += IZM_QMVVM_BUILT_IN
+#    include(../../qmvvm/qmvvm.pri)
+#} else {
+#    include(../../qmvvm/qmvvmlib.pri)
+#}
+
+include(../../qmvvm/qmvvmlib.pri)
+
+msvc {
+    CONFIG(debug, debug|release) {
+        qmvvm.depends = $${QMVVM_BINDIR}/debug/izm.qmvvm.dll
+        qmvvm.target = $${OUT_PWD}/debug/izm.qmvvm.dll
+    } else {
+        qmvvm.depends = $${QMVVM_BINDIR}/release/izm.qmvvm.dll
+        qmvvm.target = $${OUT_PWD}/release/izm.qmvvm.dll
+    }
+
+    qmvvm.commands = $$qmvvmCopyCommand($$qmvvm.depends, $$qmvvm.target)
+    QMAKE_EXTRA_TARGETS += qmvvm
+    PRE_TARGETDEPS += $$qmvvm.target
 }

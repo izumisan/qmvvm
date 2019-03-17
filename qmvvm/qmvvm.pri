@@ -1,17 +1,17 @@
 # qmvvm.pri
 
-include($${PWD}/shared.pri)
+include($${PWD}/qmvvmdir.pri)
 
 INCLUDEPATH += \
-    $${INCDIR} \
-    $${SRCDIR}
+    $${QMVVM_INCDIR} \
+    $${QMVVM_SRCDIR}
 
 HEADERS += \
-    $${INCDIR}/*.h \
-    $${SRCDIR}/*.h
+    $${QMVVM_INCDIR}/*.h \
+    $${QMVVM_SRCDIR}/*.h
 
 SOURCES += \
-    $${SRCDIR}/*.cpp
+    $${QMVVM_SRCDIR}/*.cpp
 
 QML_IMPORT_PATH += $${PWD}/qml
 RESOURCES += $${PWD}/qmvvm.qrc
